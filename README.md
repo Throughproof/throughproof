@@ -2,12 +2,16 @@
 
 **Guided. Secured. Approved.**
 
-A free, portable **Agent Skill** that makes your AI coding agent write **audit-ready logging**
-as you code — every sensitive action gets a structured, tamper-evident audit event, and secrets/PII
-never leak into your logs. Code emits a framework-neutral control key that maps to **SOC 2 and
-ISO 27001** at once (PCI-DSS and HIPAA on the roadmap) via the [Throughproof crosswalk](compliance/).
-Works in **Claude Code, Cursor, GitHub Copilot, Gemini CLI**, and any tool that supports the
-`SKILL.md` standard.
+Write compliant code **once** — satisfy **SOC 2, ISO 27001:2022, PCI-DSS v4, and HIPAA** at the
+same time.
+
+A free, portable set of **Agent Skills** that make your AI coding agent emit the right control the
+moment it touches a sensitive action — **audit logging, access control, and encryption** — done
+right, with secrets and PII kept out of your logs. Each control path emits a **framework-neutral
+control key** that maps across **4 frameworks × 8 control keys = 32 mappings** via the
+[Throughproof crosswalk](compliance/) ([coverage matrix](compliance/COVERAGE.md)). No framework
+lock-in: write the event once, satisfy every auditor. Works in **Claude Code, Cursor, GitHub
+Copilot, Gemini CLI**, and any tool that supports the `SKILL.md` standard.
 
 ## The problem
 
@@ -19,18 +23,27 @@ code in the first place**. So the developer is still left to figure out:
 - How to log failures (the actual detection signal) — not just successes.
 - How to keep secrets and PII **out** of logs while still capturing useful signal.
 
-This skill closes that gap at **authoring time**.
+These skills close that gap at **authoring time** — starting with audit logging (the control most
+teams get wrong), and extending the same write-it-right-the-first-time approach to access control and
+encryption.
 
-## What the free skill does
+## What the free skills do
 
-When active, your agent will — only for genuinely **sensitive actions** (auth changes, sensitive-data
-mutations/exports, privileged ops) — emit a single **canonical audit event** through your *existing*
-logger (it does not add a dependency), on both success and failure paths, and will refuse to log
-secrets, tokens, PII, or raw request bodies. See [`skills/compliant-logging/SKILL.md`](skills/compliant-logging/SKILL.md).
+When active, your agent applies the right control **only** for genuinely **sensitive actions** — it
+stays silent on ordinary code, so no noise:
+
+- **Audit logging** — emits a single **canonical audit event** through your *existing* logger (no new
+  dependency), on both success and failure paths, and refuses to log secrets, tokens, PII, or raw
+  request bodies. ([`compliant-logging`](skills/compliant-logging/SKILL.md))
+- **Access control** — makes authorization **deny-by-default** and least-privilege, and emits an audit
+  event for every authorization decision and privileged action. ([`secure-access-control`](skills/secure-access-control/SKILL.md))
+- **Encryption** — keeps sensitive data encrypted **in transit** (TLS enforced, never plaintext, never
+  disabled cert verification) and **at rest**. ([`crypto-data-protection`](skills/crypto-data-protection/SKILL.md))
 
 ## See it work
 
-**Without the skill**, your agent ships code like this every day — no audit trail, PII in the log:
+The audit-logging skill is the most visceral example. **Without it**, your agent ships code like this
+every day — no audit trail, PII in the log:
 
 ```python
 @router.post("/users/{user_id}/delete")
@@ -84,20 +97,23 @@ Then just write code that touches a sensitive action — the agent applies the s
 
 ## Scope & honesty
 
-This skill helps you **implement and self-check** the technical controls behind audit logging
-(control key `log.audit`) and log hygiene (`hygiene.no-secrets`). Those framework-neutral keys map
-to **SOC 2** (`CC7.2 / CC7.3 / CC6.x`), **ISO 27001:2022** (`A.8.15 / A.8.16 / A.8.12`), and more via
-the [Throughproof crosswalk](compliance/) — write the event once, satisfy every framework. See the
-generated [coverage matrix](compliance/COVERAGE.md). It does **not** certify compliance — that is an
-auditor's determination. It makes the *code* satisfy the control and makes that **machine-detectable**.
+These skills help you **implement and self-check** the technical controls behind audit logging,
+log hygiene, access control, and encryption. Each framework-neutral control key (e.g. `log.audit`,
+`access.authz`, `crypto.in-transit`) maps across **SOC 2** (`CC7.2 / CC6.x`), **ISO 27001:2022**
+(`A.8.15 / A.8.3 / A.8.24`), **PCI-DSS v4** (`Req 10.2 / 7.2 / 4.2`), and **HIPAA** (`164.312`) via
+the [Throughproof crosswalk](compliance/) — write the control once, satisfy every framework. See the
+generated [coverage matrix](compliance/COVERAGE.md) for all 32 mappings. It does **not** certify
+compliance — that is an auditor's determination. It makes the *code* satisfy the control and makes
+that **machine-detectable**.
 
 ## Pro: deterministic verifier + audit evidence  ·  ⟶ join the waitlist
 
-The free skill writes compliant logs. **Throughproof Pro** proves it: a deterministic verifier
+The free skills write compliant code. **Throughproof Pro** proves it: a deterministic verifier
 (static analysis over your repo) that finds every sensitive code path, confirms it routes through the
-canonical audit event, flags gaps and PII/secret leaks, and **exports control-to-code evidence**
-(this code path ↔ `log.audit` ↔ SOC 2 `CC7.2` / ISO 27001 `A.8.15`) that you can hand to an auditor —
-across all your repos, every framework at once, continuously.
+right control, flags gaps and PII/secret leaks, and **exports control-to-code evidence**
+(this code path ↔ `log.audit` ↔ SOC 2 `CC7.2` / ISO 27001 `A.8.15` / PCI-DSS `Req 10.2` / HIPAA
+`164.312(b)`) that you can hand to an auditor — across all your repos, every framework at once,
+continuously.
 
 No LLM guesswork in the evidence layer; it's deterministic and reproducible.
 
