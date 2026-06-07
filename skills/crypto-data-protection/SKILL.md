@@ -7,8 +7,8 @@ description: >-
   Ensures sensitive data is encrypted IN TRANSIT (TLS enforced, never plaintext http, never
   disabled certificate verification — control key `crypto.in-transit`) and AT REST (strong
   encryption for sensitive fields/blobs — control key `crypto.at-rest`). The neutral control
-  keys map to SOC 2 (`CC6.7` / `CC6.1`), ISO 27001 (`A.8.24`) and more via the Throughproof
-  crosswalk. Applies in any stack; use the platform's crypto/TLS — do not roll your own.
+  keys map to SOC 2 (`CC6.7` / `CC6.1`), ISO 27001 (`A.8.24`), PCI-DSS v4 (`Req 4.2` / `3.5`), and
+  HIPAA (`164.312(e)(1)` / `164.312(a)(2)(iv)`) via the Throughproof crosswalk. Applies in any stack; use the platform's crypto/TLS — do not roll your own.
 license: Apache-2.0
 ---
 
@@ -19,7 +19,8 @@ license: Apache-2.0
 > are code properties, not runtime events — there is no marker to emit).
 >
 > **Framework-neutral by design.** The control keys `crypto.in-transit` / `crypto.at-rest` map to
-> SOC 2 (`CC6.7` / `CC6.1`), ISO 27001 (`A.8.24`), and more via the crosswalk.
+> SOC 2 (`CC6.7` / `CC6.1`), ISO 27001 (`A.8.24`), PCI-DSS v4 (`Req 4.2` / `3.5`), and
+> HIPAA (`164.312(e)(1)` / `164.312(a)(2)(iv)`) via the crosswalk.
 
 ## When this applies
 
@@ -81,4 +82,4 @@ key = "hardcoded-secret-key"                          # ❌ key in source
 
 `crypto.in-transit` and `crypto.at-rest` are **static code properties** the Throughproof verifier
 detects directly (plaintext `http://`, disabled TLS verification, missing encryption) and maps to
-SOC 2 / ISO 27001 — deterministic evidence, no runtime marker required.
+SOC 2 / ISO 27001 / PCI-DSS / HIPAA — deterministic evidence, no runtime marker required.

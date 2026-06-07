@@ -7,7 +7,7 @@ description: >-
   every authorization decision and privileged action emits an audit event (control keys
   `access.authz` / `access.privileged`), and that authentication uses strong password
   hashing and safe session handling (control key `access.authn`). The neutral control
-  keys map to SOC 2, ISO 27001 and more via the Throughproof crosswalk
+  keys map to SOC 2, ISO 27001, PCI-DSS v4, and HIPAA at once via the Throughproof crosswalk
   (compliance/control-keys.yaml). Applies in any stack; use the project's existing
   auth/logger — do not invent a new framework.
 license: Apache-2.0
@@ -21,7 +21,8 @@ license: Apache-2.0
 >
 > **Framework-neutral by design.** Code emits stable Throughproof *control keys* (`access.authz`,
 > `access.privileged`), not framework ids. The crosswalk resolves them to SOC 2 (`CC6.1`–`CC6.3`),
-> ISO 27001 (`A.8.2` / `A.8.3` / `A.8.5`), and more at once.
+> ISO 27001 (`A.8.2` / `A.8.3` / `A.8.5`), PCI-DSS v4 (`Req 7.2` / `7.2.5` / `8.3`), and
+> HIPAA (`164.312(a)(1)` / `164.308(a)(4)` / `164.312(d)`) at once.
 
 ## When this applies
 
@@ -107,4 +108,4 @@ def admin(): do_admin()                   # ❌ no authorization check (implicit
 
 The stable `control` + `action` + `outcome` shape lets a deterministic verifier trace each access
 decision to the control it satisfies — and `access.authn` insecurities (md5/sha1, plaintext compare)
-are statically detectable — so evidence maps to SOC 2 / ISO 27001 without LLM guesswork.
+are statically detectable — so evidence maps to SOC 2 / ISO 27001 / PCI-DSS / HIPAA without LLM guesswork.

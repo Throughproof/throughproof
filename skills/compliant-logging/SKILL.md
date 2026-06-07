@@ -6,8 +6,8 @@ description: >-
   personal, financial, or health data, permission/role changes, data exports, or admin
   operations. Ensures every sensitive action emits a structured, tamper-evident AUDIT
   EVENT (control key `log.audit`) and that secrets and PII never leak into logs
-  (control key `hygiene.no-secrets`). The neutral control keys map to SOC 2, ISO 27001
-  and more via the Throughproof crosswalk (compliance/control-keys.yaml).
+  (control key `hygiene.no-secrets`). The neutral control keys map to SOC 2, ISO 27001,
+  PCI-DSS v4, and HIPAA at once via the Throughproof crosswalk (compliance/control-keys.yaml).
   Applies in any stack; do not invent a new logging library — use the project's logger.
 license: Apache-2.0
 ---
@@ -21,7 +21,8 @@ license: Apache-2.0
 > **Framework-neutral by design.** Code emits a stable Throughproof *control key*
 > (`log.audit`), not a framework id. The crosswalk (`compliance/control-keys.yaml` +
 > `compliance/frameworks/*.yaml`) resolves that key to every framework at once — SOC 2 `CC7.2`,
-> ISO 27001 `A.8.15`, and so on. Write the event once; it counts as evidence for all of them.
+> ISO 27001 `A.8.15`, PCI-DSS v4 `Req 10.2`, HIPAA `164.312(b)`. Write the event once; it counts as
+> evidence for all of them.
 > Legacy events that still emit `control: "CC7.2"` keep working — the verifier aliases them to
 > `log.audit`.
 
@@ -51,7 +52,7 @@ Required fields:
 | field | meaning |
 |---|---|
 | `audit` | always `true` — the stable marker that tags this as an audit event |
-| `control` | the Throughproof control key — `"log.audit"` for an audit event (maps to SOC 2 `CC7.2`, ISO 27001 `A.8.15`, … via the crosswalk) |
+| `control` | the Throughproof control key — `"log.audit"` for an audit event (maps to SOC 2 `CC7.2`, ISO 27001 `A.8.15`, PCI-DSS v4 `Req 10.2`, HIPAA `164.312(b)` via the crosswalk) |
 | `action` | stable verb.noun, e.g. `"user.delete"`, `"role.grant"`, `"data.export"` |
 | `actor` | **id** of who did it (user id / service id / `"system"`) — never the name/email |
 | `target` | **id** of the affected resource (and its type), e.g. `{ "type": "user", "id": "u_123" }` |
